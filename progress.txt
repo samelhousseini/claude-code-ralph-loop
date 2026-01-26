@@ -1,0 +1,8 @@
+# Progress Log
+
+This file is automatically updated by the Ralph Loop to track learnings across iterations.
+
+## Getting Started
+
+Run `./loop.sh plan 10` to start planning mode.
+Run `./loop.sh build 50` to start build mode.

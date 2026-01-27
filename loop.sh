@@ -5,6 +5,14 @@
 #   ./loop.sh plan 10      # Run planning mode for max 10 iterations
 #   ./loop.sh build 50     # Run build mode for max 50 iterations
 #   ./loop.sh build 0      # Run build mode indefinitely (until COMPLETE)
+#
+# REQUIRES: jq for JSON parsing (real-time streaming output)
+# Install jq:
+#   Windows (choco):    choco install jq
+#   Windows (scoop):    scoop install jq
+#   macOS:              brew install jq
+#   Ubuntu/Debian:      sudo apt install jq
+#   Download:           https://jqlang.github.io/jq/download/
 
 set -e
 
@@ -59,13 +67,26 @@ while true; do
     fi
 
     # FRESH Claude Code process each iteration - the key insight
-    # Full list of Claude Code tools enabled for autonomous operation
-    OUTPUT=$(cat "$PROMPT_FILE" | claude -p \
-        --dangerously-skip-permissions \
-        --allowedTools "Read,Write,Edit,MultiEdit,Glob,Grep,Bash,WebFetch,WebSearch,Task,NotebookEdit,TodoWrite" \
-        2>&1) || true
+    # Use --output-format stream-json for real-time streaming
+    TEMP_OUTPUT="loop_output_$$.txt"
 
-    echo "$OUTPUT"
+    cat "$PROMPT_FILE" | claude -p \
+        --dangerously-skip-permissions \
+        --verbose \
+        --output-format stream-json \
+        --allowedTools "Read,Write,Edit,MultiEdit,Glob,Grep,Bash,WebFetch,WebSearch,Task,NotebookEdit,TodoWrite" \
+        2>&1 | tee "$TEMP_OUTPUT" | while IFS= read -r line; do
+            # Try to extract text from JSON (use printf to avoid echo issues with special chars)
+            text=$(printf '%s' "$line" | jq -r '.delta.text // .message.content[]?.text // empty' 2>/dev/null)
+            if [ -n "$text" ]; then
+                # printf %b interprets backslash escapes, preserving newlines
+                printf '%b' "$text"
+            fi
+        done || true
+
+    echo ""
+    OUTPUT=$(cat "$TEMP_OUTPUT")
+    rm -f "$TEMP_OUTPUT"
 
     # Log iteration to progress.txt
     echo "" >> progress.txt

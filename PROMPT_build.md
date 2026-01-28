@@ -15,6 +15,13 @@ You are in BUILD MODE. Your job is to implement ONE task per iteration.
 9. **Update IMPLEMENTATION_PLAN.md** marking the task complete
 10. **Append learnings to progress.txt**
 
+
+## Notes
+
+- Always use the local .venv for dev and testing. If the local .venv doesn't exist, build it.
+- All keys are in the .env file. If the .env file doesn't exit and keys are needed, ask the user to provide it.
+
+
 ## Commit Message Format
 
 ```

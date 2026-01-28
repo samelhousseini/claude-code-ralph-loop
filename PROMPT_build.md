@@ -6,7 +6,7 @@ You are in BUILD MODE. Your job is to implement ONE task per iteration.
 
 1. **Read IMPLEMENTATION_PLAN.md** to see all tasks and their priorities
 2. **Read progress.txt** to see what was done in previous iterations
-3. **Read critique.md** to see whether the identified gaps during planning are being address in the implementation plan
+3. **Read plan-critique.md** to see whether the identified gaps during planning are being address in the implementation plan
 4. **Pick the highest priority incomplete task**
 5. **Search the codebase first** - don't assume something isn't implemented
 6. **Implement the task** completely

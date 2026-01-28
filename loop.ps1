@@ -45,10 +45,10 @@ while ($true) {
 
     Write-Host "--- Claude Output ---" -ForegroundColor Cyan
 
-    # Use --output-format stream-json for real-time streaming
-    # Parse JSON lines and extract text content
+    # Collect all output for checking completion signals
     $AllOutput = ""
 
+    # Stream JSON and extract text content
     $PromptContent | claude -p `
         --dangerously-skip-permissions `
         --verbose `
@@ -56,45 +56,41 @@ while ($true) {
         --allowedTools "Read,Write,Edit,MultiEdit,Glob,Grep,Bash,WebFetch,WebSearch,Task,NotebookEdit,TodoWrite" 2>&1 |
     ForEach-Object {
         $line = $_
-        if ($line -is [string]) {
+        if ($line -is [string] -and $line.Length -gt 0) {
             $AllOutput += $line + "`n"
 
-            # Try to parse as JSON and extract content
+            # Try to parse JSON and extract text
             try {
-                $json = $line | ConvertFrom-Json -ErrorAction SilentlyContinue
-                $textToPrint = $null
+                $json = $line | ConvertFrom-Json -ErrorAction Stop
 
+                # Handle different message types
                 if ($json.type -eq "assistant" -and $json.message.content) {
                     foreach ($block in $json.message.content) {
-                        if ($block.type -eq "text") {
-                            $textToPrint = $block.text
+                        if ($block.type -eq "text" -and $block.text) {
+                            Write-Host ""
+                            Write-Host $block.text
+                            Write-Host ""
                         }
                     }
                 }
-                elseif ($json.type -eq "content_block_delta" -and $json.delta.text) {
-                    $textToPrint = $json.delta.text
-                }
-                elseif ($json.type -eq "result" -and $json.result) {
-                    Write-Host ""
-                    Write-Host $json.result -ForegroundColor Gray
-                }
-
-                # Print text - handle newlines correctly
-                # Note: Write-Host -NoNewline strips ALL newlines, not just trailing
-                # So we only use -NoNewline for text without embedded newlines
-                if ($null -ne $textToPrint -and $textToPrint -ne "") {
-                    if ($textToPrint.Contains("`n")) {
-                        # Has embedded newlines - print without -NoNewline
-                        # Trim trailing newline to reduce extra spacing
-                        Write-Host $textToPrint.TrimEnd("`r`n")
-                    } else {
-                        # No newlines - use -NoNewline for smooth streaming
-                        Write-Host $textToPrint -NoNewline
+                elseif ($json.type -eq "content_block_delta") {
+                    if ($json.delta.text) {
+                        [Console]::Write($json.delta.text)
                     }
                 }
+                elseif ($json.type -eq "content_block_stop") {
+                    Write-Host ""
+                }
+                elseif ($json.type -eq "result") {
+                    Write-Host ""
+                    Write-Host "Result: $($json.result)" -ForegroundColor Gray
+                    Write-Host ""
+                }
             } catch {
-                # Not JSON, just print as-is
-                Write-Host $line
+                # Not valid JSON - print raw if it looks like content
+                if (-not $line.StartsWith("{")) {
+                    Write-Host $line
+                }
             }
         }
     }

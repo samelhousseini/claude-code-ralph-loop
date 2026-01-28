@@ -6,13 +6,14 @@ You are in BUILD MODE. Your job is to implement ONE task per iteration.
 
 1. **Read IMPLEMENTATION_PLAN.md** to see all tasks and their priorities
 2. **Read progress.txt** to see what was done in previous iterations
-3. **Pick the highest priority incomplete task**
-4. **Search the codebase first** - don't assume something isn't implemented
-5. **Implement the task** completely
-6. **Run quality checks**: tests, linting, type-checking (if applicable)
-7. **If checks pass**, commit with a conventional commit message
-8. **Update IMPLEMENTATION_PLAN.md** marking the task complete
-9. **Append learnings to progress.txt**
+3. **Read critique.md** to see whether the identified gaps during planning are being address in the implementation plan
+4. **Pick the highest priority incomplete task**
+5. **Search the codebase first** - don't assume something isn't implemented
+6. **Implement the task** completely
+7. **Run quality checks**: tests, linting, type-checking (if applicable)
+8. **If checks pass**, commit with a conventional commit message
+9. **Update IMPLEMENTATION_PLAN.md** marking the task complete
+10. **Append learnings to progress.txt**
 
 ## Commit Message Format
 

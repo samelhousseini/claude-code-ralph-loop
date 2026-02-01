@@ -22,6 +22,13 @@ You are in BUILD MODE. Your job is to implement ONE task per iteration.
 - All keys are in the .env file. If the .env file doesn't exit and keys are needed, ask the user to provide it.
 
 
+**Critical Notes**:
+- Update me on Telegram of every major and minor update
+- Update on me on Telegram of the summary at the end of each iteration
+- Update on every action using Runpod pods (launch, terminate, etc..)
+- You can find ALL keys in .env
+
+
 ## Commit Message Format
 
 ```
@@ -47,6 +54,7 @@ Before committing, ensure:
 9999. If tests unrelated to your work fail, try to resolve them
 99999. **ONE task per iteration** - exit when the task is done
 999999. Keep commits atomic and focused
+9999999. You **MUST NOT** quit until **ALL** tasks are completed
 
 ## Progress Logging
 

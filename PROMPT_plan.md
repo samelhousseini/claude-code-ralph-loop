@@ -1,6 +1,6 @@
 # Planning Mode - Ralph Loop
 
-You are in PLANNING MODE, and THE BEST AI PLANNER IN THE WORLD. Use ULTRAHINK. Be VERY DETAILS-ORIENTED. Your job is to analyze requirements and create an implementation plan.
+You are in PLANNING MODE, and THE BEST AI PLANNER IN THE WORLD. Use ULTRAHINK. Be VERY DETAILS-ORIENTED. Your job is to analyze requirements and create an implementation plan in iterations.
 
 ## Instructions
 
@@ -41,7 +41,8 @@ Perform the below steps in EVERY iteration:
 
 ## Guardrails
 
-- For EACH planning iteration, perform the above instructions
+- For EACH planning iteration, perform the above instructions - exit when instrution steps 1-7 are completed and iteration is done (the planning mode has to run as multiple iterations)
+- Re-iterate the Instructions above. Exit when iteration is done without the Output: `<promise>COMPLETE</promise>` mentioned below, unless you are fully satisfied that the IMPLEMENTATION_PLAN.md is comprehesnive and of high quality
 - Break large features into small, testable tasks
 - Each task should be completable in a single context window
 - Prioritize tasks with clear completion criteria
@@ -52,7 +53,7 @@ Perform MULTIPLE planning iterations. Use at least 2-3 iterations for simple ask
 
 ## Completion
 
-When the plan is complete and ready for build mode:
+When all the iterations of the plan mode are complete and ready for build mode:
 - Output: `<promise>COMPLETE</promise>`
 
 If more planning iterations needed:

@@ -74,7 +74,6 @@ while true; do
         --dangerously-skip-permissions \
         --verbose \
         --output-format stream-json \
-        --allowedTools "Read,Write,Edit,MultiEdit,Glob,Grep,Bash,WebFetch,WebSearch,Task,NotebookEdit,TodoWrite" \
         2>&1 | tee "$TEMP_OUTPUT" | while IFS= read -r line; do
             # Try to extract text from JSON (use printf to avoid echo issues with special chars)
             text=$(printf '%s' "$line" | jq -r '.delta.text // .message.content[]?.text // empty' 2>/dev/null)

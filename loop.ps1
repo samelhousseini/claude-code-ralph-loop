@@ -49,11 +49,11 @@ while ($true) {
     $AllOutput = ""
 
     # Stream JSON and extract text content
+    # All tools available (MCP, built-in, etc.) - permissions skipped via --dangerously-skip-permissions
     $PromptContent | claude -p `
         --dangerously-skip-permissions `
         --verbose `
-        --output-format stream-json `
-        --allowedTools "Read,Write,Edit,MultiEdit,Glob,Grep,Bash,WebFetch,WebSearch,Task,NotebookEdit,TodoWrite" 2>&1 |
+        --output-format stream-json 2>&1 |
     ForEach-Object {
         $line = $_
         if ($line -is [string] -and $line.Length -gt 0) {

@@ -52,7 +52,7 @@ Before committing, ensure:
 
 999. Single sources of truth - no unnecessary migrations/adapters
 9999. If tests unrelated to your work fail, try to resolve them
-99999. **ONE task per iteration** - exit when the task is done
+99999. **ONE task per iteration** - exit when the task is done (if you are running in interactive mode, call /clear)
 999999. Keep commits atomic and focused
 9999999. You **MUST NOT** quit until **ALL** tasks are completed
 

@@ -46,22 +46,14 @@ Agent teams must be enabled. Ensure this is set in settings.json or environment:
 
 ## Instructions
 
-### Step 1: Create the Team
-
-```
-TeamCreate(
-  team_name="build-team",
-  description="Implementing tasks from loop/IMPLEMENTATION_PLAN.md"
-)
-```
-
-### Step 2: Read State and Identify Parallelizable Tasks
+### Step 1: Read State and Identify Parallelizable Tasks
 
 1. Read `loop/IMPLEMENTATION_PLAN.md` to get all tasks
 2. Read `loop/IMPLEMENTATION_PLAN_INSTRUCTIONS.md` to understand how tasks should be executed
 3. Read `loop/progress.txt` to understand what was done previously
 4. Read `loop/plan-critique.md` to ensure gaps are being addressed
-5. **Analyze task dependencies** and identify ALL incomplete tasks whose dependencies are already met
+5. If ALL tasks are complete, output `<promise>COMPLETE</promise>`
+6. **Analyze task dependencies** and identify ALL incomplete tasks whose dependencies are already met
 6. **Group independent tasks** — tasks that don't depend on each other AND don't modify the same files can run in parallel
 7. **Select a batch** — pick all tasks from the highest-priority group of independent tasks
 
@@ -70,6 +62,15 @@ TeamCreate(
 - Tasks that modify the **same files** must NOT run in parallel — treat them as dependent even if not explicitly listed
 - When in doubt, run sequentially — a false dependency is safer than a file conflict
 - If only one task is ready, that's fine — run it alone
+
+### Step 2: Create the Team
+
+```
+TeamCreate(
+  team_name="build-team",
+  description="Implementing tasks from loop/IMPLEMENTATION_PLAN.md"
+)
+```
 
 ### Step 3: Create Tasks and Spawn Workers
 
@@ -132,13 +133,9 @@ Task(
   5. **Implement the task** completely:
      - Search the codebase first — don't assume something isn't implemented
      - Write clean, focused code
-     - ONLY modify files listed in the task's File Ownership section — other workers may be running in parallel
-     - Set up .venv and install dependencies as described in the instructions doc
-     - Write unit tests for ALL code you create or modify
-     - Run ALL quality gates from the instructions doc (tests, lint, type-check, format)
-     - If the task involves IaC scripts, run the full create→poll→validate→destroy lifecycle test
-     - If the task involves skill YAML frontmatter, run stress tests with headless Claude Code
-     - If ALL checks pass, commit with a conventional commit message
+     - ONLY modify files listed in the task's File Ownership section
+     - Follow ALL setup, testing, and validation procedures from the instructions doc
+     - Pass ALL quality gates (see checklist below) before committing
   6. **Mark the task as completed** using `TaskUpdate` when FULLY done
   7. **Send a message to the team lead** summarizing what you did:
      - Status: completed | blocked | partial
@@ -147,10 +144,6 @@ Task(
      - Quality gates passed/failed
      - Any issues encountered or learnings
   8. **STOP after this one task.** Do not claim another task. Wait for the team lead to shut you down.
-
-  ## CRITICAL: Read the Instructions Doc
-
-  Before doing ANY implementation work, read `loop/IMPLEMENTATION_PLAN_INSTRUCTIONS.md` cover to cover. It contains the exact procedures for environment setup, testing, quality gates, and validation. Follow it to the letter.
 
   ## CRITICAL: File Ownership
 
@@ -254,17 +247,14 @@ After ALL workers are shut down, update tracking for EACH completed task:
 
 ## Critical Rules
 
-1. **You are the orchestrator, NOT a worker** — use delegate mode (Shift+Tab). Never write code, run tests, or commit. Workers do ALL implementation. If a worker is stuck, guide them via messaging — do not do their work for them
-2. **Parallelize independent tasks** — analyze dependencies in the plan and spawn multiple workers simultaneously for tasks that don't depend on each other and don't touch the same files. This is a key performance optimization — never run tasks sequentially when they can run in parallel
-3. **Prevent file conflicts** — before spawning parallel workers, verify their tasks modify DIFFERENT files. Assign explicit file ownership in each task description. If two tasks touch the same file, they MUST run sequentially (put one in the next batch)
-4. **One worker, one task** — each worker implements exactly one task and gets killed after. No worker should claim a second task
+1. **You are the orchestrator, NOT a worker** — use delegate mode (Shift+Tab). Never write code, run tests, or commit. If a worker is stuck, guide them via messaging — never do their work for them, no matter how long they take
+2. **Parallelize independent tasks** — spawn multiple workers simultaneously for tasks that don't depend on each other and don't touch the same files. Never run sequentially when parallel is possible
+3. **Prevent file conflicts** — assign explicit file ownership in each task description. Tasks touching the same file MUST run sequentially (put one in the next batch)
+4. **One worker, one task** — each worker implements exactly one task and gets killed after. No worker claims a second task
 5. **DO NOT QUIT** until ALL tasks in loop/IMPLEMENTATION_PLAN.md are complete
 6. **Notify via Telegram** for every major update and after each task
-7. **All keys are in `.env`** — teammates have access
-8. **Use local .venv** for testing — create if doesn't exist
-9. **You MUST OBSESSIVELY UPDATE CLAUDE.MD** — update and maintain Claude.md in every iteration. Make sure that Claude.md is crystal-clear, concise, up-to-date, and has all the long-term-memory information needed for this project
-10. **Wait for workers** — never implement yourself, no matter how long they take. If a worker is slow, message them. If they're stuck, guide them — but never do their work
-11. **FRESH CONTEXT EVERY BATCH** — after each batch of parallel tasks completes, tear down the entire team (`SendMessage` shutdown requests to all workers, then `TeamDelete`) and recreate from scratch for the next batch. Every worker gets a clean context with the latest code, plan, and progress. Never reuse workers across batches.
+7. **You MUST OBSESSIVELY UPDATE CLAUDE.MD** — keep it crystal-clear, concise, and up-to-date with all long-term-memory information needed for this project
+8. **FRESH CONTEXT EVERY BATCH** — after each batch completes, tear down the entire team and recreate from scratch for the next batch. Never reuse workers across batches.
 
 ## Completion Signals
 

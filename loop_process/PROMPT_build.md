@@ -134,13 +134,9 @@ Task(
   5. **Implement the task** completely:
      - Search the codebase first — don't assume something isn't implemented
      - Write clean, focused code
-     - ONLY modify files listed in the task's File Ownership section — other workers may be running in parallel
-     - Set up .venv and install dependencies as described in the instructions doc
-     - Write unit tests for ALL code you create or modify
-     - Run ALL quality gates from the instructions doc (tests, lint, type-check, format)
-     - If the task involves IaC scripts, run the full create→poll→validate→destroy lifecycle test
-     - If the task involves skill YAML frontmatter, run stress tests with headless Claude Code
-     - If ALL checks pass, commit with a conventional commit message
+     - ONLY modify files listed in the task's File Ownership section
+     - Follow ALL setup, testing, and validation procedures from the instructions doc
+     - Pass ALL quality gates (see checklist below) before committing
   6. **Mark the task as completed** using `TaskUpdate` when FULLY done
   7. **Send a message to the team lead** summarizing what you did:
      - Status: completed | blocked | partial
@@ -149,10 +145,6 @@ Task(
      - Quality gates passed/failed
      - Any issues encountered or learnings
   8. **STOP after this one task.** Do not claim another task. Wait for the team lead to shut you down.
-
-  ## CRITICAL: Read the Instructions Doc
-
-  Before doing ANY implementation work, read `loop_process/IMPLEMENTATION_PLAN_INSTRUCTIONS.md` cover to cover. It contains the exact procedures for environment setup, testing, quality gates, and validation. Follow it to the letter.
 
   ## CRITICAL: File Ownership
 
@@ -266,17 +258,14 @@ Exit normally — the loop script will restart you with fresh context for the ne
 
 ## Critical Rules
 
-1. **You are the orchestrator, NOT a worker** — never write code, run tests, or commit. Delegate everything to workers
-2. **Parallelize independent tasks** — analyze dependencies in the plan and spawn multiple workers simultaneously for tasks that don't depend on each other and don't touch the same files. This is a key performance optimization — never run tasks sequentially when they can run in parallel
-3. **Prevent file conflicts** — before spawning parallel workers, verify their tasks modify DIFFERENT files. Assign explicit file ownership in each task description. If two tasks touch the same file, they MUST run sequentially (put one in the next iteration)
-4. **One worker, one task** — each worker implements exactly one task and gets killed after. No worker should claim a second task
+1. **You are the orchestrator, NOT a worker** — never write code, run tests, or commit. If a worker is stuck, guide them via messaging — never do their work for them, no matter how long they take
+2. **Parallelize independent tasks** — spawn multiple workers simultaneously for tasks that don't depend on each other and don't touch the same files. Never run sequentially when parallel is possible
+3. **Prevent file conflicts** — assign explicit file ownership in each task description. Tasks touching the same file MUST run sequentially (put one in the next iteration)
+4. **One worker, one task** — each worker implements exactly one task and gets killed after. No worker claims a second task
 5. **DO NOT output `<promise>COMPLETE</promise>`** unless ALL tasks in loop_process/IMPLEMENTATION_PLAN.md are complete
 6. **Notify via Telegram** for every major update and after each task
-7. **All keys are in `.env`** — teammates have access
-8. **Use local .venv** for testing — create if doesn't exist
-9. **You MUST OBSESSIVELY UPDATE CLAUDE.MD** — update and maintain Claude.md in every iteration
-10. **Wait for workers** — never implement yourself. If a worker is slow, message them
-11. **FRESH CONTEXT EVERY ITERATION** — always tear down the team completely at the end of each iteration. Each iteration: create team → spawn fresh workers for a batch of independent tasks → workers complete their tasks → kill all workers → `TeamDelete` → exit. The loop script restarts you with fresh context for the next batch.
+7. **You MUST OBSESSIVELY UPDATE CLAUDE.MD** — keep it crystal-clear, concise, and up-to-date
+8. **FRESH CONTEXT EVERY ITERATION** — after each batch completes, tear down the entire team, then exit. The loop script restarts you with fresh context for the next batch. Never reuse workers.
 
 ## Completion Signals
 

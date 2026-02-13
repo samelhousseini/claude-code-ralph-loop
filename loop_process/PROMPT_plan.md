@@ -247,7 +247,7 @@ Task(
      - **Dependencies**: [other task numbers this depends on, if any]
      ```
 
-     **CRITICAL: Every task MUST have checkboxes at three levels:**
+     **CRITICAL: Every task MUST have checkboxes at four levels:**
      1. **Task-level checkbox** (`- [ ] **COMPLETE**`) — ticked only when everything below is done
      2. **Subtask checkboxes** — concrete implementation steps the worker ticks off as they go
      3. **Acceptance criteria checkboxes** — testable conditions ticked after verification
@@ -490,13 +490,12 @@ TeamDelete()
 
 ## Critical Rules
 
-1. **You are the orchestrator, NOT an analyst/architect/critic** — never write specs, plans, or critiques yourself. Delegate everything to teammates
+1. **You are the orchestrator, NOT an analyst/architect/critic** — never write specs, plans, or critiques yourself. If a teammate is stuck, guide them via messaging — never do their work for them, no matter how long they take
 2. **Let teammates debate** — encourage the architect and critic to discuss disagreements directly before you intervene
 3. **Enforce critique-refinement cycles** — never let a planning iteration end with known gaps. Create additional cycle tasks until the critic is satisfied
 4. **Notify via Telegram** for every major update and after each phase
-5. **You MUST OBSESSIVELY UPDATE CLAUDE.MD** — update and maintain Claude.md in every iteration
-6. **Wait for teammates** — never do the analysis yourself. If a teammate is slow, message them
-7. **FRESH CONTEXT EVERY ITERATION** — always tear down the team completely at the end of each iteration (the loop script gives you fresh context, but teammates also need fresh context). Never reuse teammates from a previous iteration. Each iteration: create team → spawn fresh teammates → do work → shut down all teammates → `TeamDelete` → exit. Stale teammate context leads to outdated assumptions and drift.
+5. **You MUST OBSESSIVELY UPDATE CLAUDE.MD** — keep it crystal-clear, concise, and up-to-date
+6. **FRESH CONTEXT EVERY ITERATION** — tear down the team completely at the end of each iteration. Never reuse teammates — fresh context prevents stale assumptions and drift.
 
 ## Number of Iterations
 

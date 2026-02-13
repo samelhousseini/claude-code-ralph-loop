@@ -192,10 +192,10 @@ Task(
      - Dependencies between requirements
      - Current codebase state relevant to the plan
      - Ambiguities, vague requirements, or gaps in the specs (flag anything that isn't specific or testable)
-  4. **Mark Phase 1 as completed** in the task list
-  5. **Message the architect** with your key findings so they can start Phase 2
-  6. **Stay available** — if the architect or critic messages you with questions about requirements, respond promptly
-  7. Check TaskList for any additional work
+  5. **Mark Phase 1 as completed** in the task list
+  6. **Message the architect** with your key findings so they can start Phase 2
+  7. **Stay available** — if the architect or critic messages you with questions about requirements, respond promptly
+  8. Check TaskList for any additional work
 
   ## Communication
   - Message `architect` when your analysis is ready
@@ -268,7 +268,7 @@ Task(
      - **Dependencies**: [other task numbers this depends on, if any]
      ```
 
-     **CRITICAL: Every task MUST have checkboxes at three levels:**
+     **CRITICAL: Every task MUST have checkboxes at four levels:**
      1. **Task-level checkbox** (`- [ ] **COMPLETE**`) — ticked only when everything below is done
      2. **Subtask checkboxes** — concrete implementation steps the worker ticks off as they go
      3. **Acceptance criteria checkboxes** — testable conditions ticked after verification
@@ -501,8 +501,8 @@ TaskCreate(
   activeForm="Refining plan again"
 )
 ```
-4. Set dependencies and let teammates claim them
-5. Repeat until the critic reports no significant gaps
+
+Set dependencies and let teammates claim them. Repeat until the critic reports no significant gaps.
 
 ### Step 6: Shut Down and Clean Up
 
@@ -523,15 +523,14 @@ TeamDelete()
 
 ## Critical Rules
 
-1. **You are the orchestrator, NOT an analyst/architect/critic** — use delegate mode (Shift+Tab). Never write specs, plans, or critiques yourself. Teammates do ALL analysis and writing. If a teammate is stuck, guide them via messaging — do not do their work for them
+1. **You are the orchestrator, NOT an analyst/architect/critic** — use delegate mode (Shift+Tab). Never write specs, plans, or critiques yourself. If a teammate is stuck, guide them via messaging — never do their work for them, no matter how long they take
 2. **Let teammates debate** — encourage the architect and critic to discuss disagreements directly before you intervene
 3. **Minimum 2-3 critique-refinement cycles** for simple asks, more for complex ones. Never skip a cycle. Never declare the plan "done" while the critic still has open findings. Loop back to earlier phases without hesitation if quality isn't there
 4. **Notify via Telegram** for every major update and after each phase
 5. **Always present findings to the user** between major phases for feedback
-6. **You MUST OBSESSIVELY UPDATE CLAUDE.MD** — update and maintain Claude.md in every iteration. Make sure that Claude.md is crystal-clear, concise, up-to-date, and has all the long-term-memory information needed for this project
+6. **You MUST OBSESSIVELY UPDATE CLAUDE.MD** — keep it crystal-clear, concise, and up-to-date with all long-term-memory information needed for this project
 7. **DO NOT QUIT** until the plan is complete or the user explicitly stops you
-8. **Wait for teammates** — never analyze or write yourself, no matter how long they take. If teammates are slow, message them. If they're stuck, redirect them or spawn a replacement — but never do their work
-9. **FRESH CONTEXT EVERY ITERATION** — after each critique-refinement cycle completes, tear down the entire team (`SendMessage` shutdown requests to all teammates, then `TeamDelete`) and recreate it from scratch before the next cycle. Teammates accumulate stale context, outdated assumptions, and residual state as they work. A fresh team starts clean — new teammates read the latest specs, the latest plan, and the latest critique without carrying baggage from previous cycles. This is the same principle as the process loop's fresh context per iteration, applied to agent teams. Never let the same teammates run indefinitely across many cycles.
+8. **FRESH CONTEXT EVERY CYCLE** — after each critique-refinement cycle completes, tear down the entire team and recreate from scratch. Fresh teammates read the latest specs, plan, and critique without carrying baggage from previous cycles.
 
 ## Completion Signals
 

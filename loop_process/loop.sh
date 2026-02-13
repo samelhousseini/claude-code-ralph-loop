@@ -17,7 +17,7 @@
 set -e
 
 MODE="${1:-build}"
-PROMPT_FILE="PROMPT_${MODE}.md"
+PROMPT_FILE="loop_process/PROMPT_${MODE}.md"
 MAX_ITERATIONS=${2:-50}  # Default safety limit
 ITERATION=0
 
@@ -87,16 +87,16 @@ while true; do
     OUTPUT=$(cat "$TEMP_OUTPUT")
     rm -f "$TEMP_OUTPUT"
 
-    # Log iteration to progress.txt
-    echo "" >> progress.txt
-    echo "## Iteration $ITERATION - $(date '+%Y-%m-%d %H:%M:%S')" >> progress.txt
+    # Log iteration to loop_process/progress.txt
+    echo "" >> loop_process/progress.txt
+    echo "## Iteration $ITERATION - $(date '+%Y-%m-%d %H:%M:%S')" >> loop_process/progress.txt
 
     # Check for completion signal
     if echo "$OUTPUT" | grep -q "<promise>COMPLETE</promise>"; then
         echo -e "\n${GREEN}========================================${NC}"
         echo -e "${GREEN}  All tasks complete!${NC}"
         echo -e "${GREEN}========================================${NC}"
-        echo "## COMPLETED - $(date '+%Y-%m-%d %H:%M:%S')" >> progress.txt
+        echo "## COMPLETED - $(date '+%Y-%m-%d %H:%M:%S')" >> loop_process/progress.txt
         exit 0
     fi
 

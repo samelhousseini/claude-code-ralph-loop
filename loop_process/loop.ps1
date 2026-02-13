@@ -10,7 +10,7 @@ param(
 [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 $OutputEncoding = [System.Text.Encoding]::UTF8
 
-$PromptFile = "PROMPT_$Mode.md"
+$PromptFile = "loop_process/PROMPT_$Mode.md"
 $Iteration = 0
 
 Write-Host "================================" -ForegroundColor Blue
@@ -98,8 +98,8 @@ while ($true) {
     Write-Host ""
 
     # Log iteration
-    Add-Content -Path "progress.txt" -Value ""
-    Add-Content -Path "progress.txt" -Value "## Iteration $Iteration - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+    Add-Content -Path "loop_process/progress.txt" -Value ""
+    Add-Content -Path "loop_process/progress.txt" -Value "## Iteration $Iteration - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 
     # Check for completion signal in output
     if ($AllOutput -match "<promise>COMPLETE</promise>") {
@@ -107,7 +107,7 @@ while ($true) {
         Write-Host "========================================" -ForegroundColor Green
         Write-Host "  All tasks complete!" -ForegroundColor Green
         Write-Host "========================================" -ForegroundColor Green
-        Add-Content -Path "progress.txt" -Value "## COMPLETED - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
+        Add-Content -Path "loop_process/progress.txt" -Value "## COMPLETED - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
         exit 0
     }
 

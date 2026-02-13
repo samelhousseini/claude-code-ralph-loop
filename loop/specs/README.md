@@ -1,11 +1,11 @@
 # Specifications Directory
 
-Place your project requirements here. The Ralph Loop will read these specs to understand what to build.
+Place your project requirements here. The Ralph Loop (interactive team mode) will read these specs to understand what to build.
 
 ## Recommended Structure
 
 ```
-specs/
+loop/specs/
 ├── README.md           # This file
 ├── requirements.md     # High-level requirements
 ├── features/           # Feature specifications
